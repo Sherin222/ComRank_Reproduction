@@ -36,21 +36,19 @@ We implement ComRank and several baselines (MAE, GDF, Ru(g)) in a unified framew
 A typical model consists of a backbone network followed by a fully connected layer, and a sigmoid function applied independently to each class. Each output represents the probability that the corresponding class exists.
 
 The most commonly used loss function is Binary Cross Entropy (BCE):
-$$
-L = - \sum_{k=1}^{K} \left[
-y_k \log p_k + (1 - y_k)\log(1 - p_k)
-\right]
-$$
+
+$$L = - \sum_{k=1}^{K} \left[y_k \log p_k + (1 - y_k)\log(1 - p_k)\right]$$
+
 where $p_k$ is the predicted probability for class $k$. BCE treats each class as an independent binary classification task.
 
 Other choices include Mean Squared Error (MSE),
-$$
-L = \frac{1}{K} \sum_{k=1}^{K} (p_k - y_k)^2
-$$
+
+$$L = \frac{1}{K} \sum_{k=1}^{K} (p_k - y_k)^2$$
+
 and Mean Absolute Error (MAE),
-$$
-L = \frac{1}{K} \sum_{k=1}^{K} |p_k - y_k|
-$$
+
+$$L = \frac{1}{K} \sum_{k=1}^{K} |p_k - y_k|$$
+
 which measure the squared and absolute differences between predictions and labels, respectively, and treat the task as a regression problem. However, these losses model each class independently and do not capture relationships between labels.
 
 ### 2.2 Multi-Label Complementary Label Learning
@@ -65,16 +63,15 @@ A representative approach is the Unbiased Risk Estimator (URE), which reformulat
 ### 2.3 Ranking Loss
 **Learn relative ordering between class scores instead of absolute labels.**
 
-Given class scores \(f(x, k)\), the model enforces:
-$$
-f(x, i) > f(x, j)
-$$
-where \(i\) is a potentially relevant class and \(j\) is an irrelevant (complementary) class.
+Given class scores $f(x, k)$, the model enforces:
+
+$$f(x, i) > f(x, j)$$
+
+where $i$ is a potentially relevant class and $j$ is an irrelevant (complementary) class.
 
 A common formulation is the pairwise ranking loss:
-$$
-L = \sum \max(0, 1 - (f_i - f_j))
-$$
+
+$$L = \sum \max(0, 1 - (f_i - f_j))$$
 
 These methods are widely used in learning-to-rank problems and have been adapted to weakly supervised settings.
 
